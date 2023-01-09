@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employer;
+use Database\Factories\EmployerFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +16,6 @@ class EmployerSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Employer::factory(50)->create();
     }
 }
