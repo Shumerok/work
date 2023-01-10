@@ -12,4 +12,9 @@ class Employer extends Model
     use NodeTrait;
 
     protected $guarded = false;
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
 }

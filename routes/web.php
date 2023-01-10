@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::resource('employees', EmployerController::class);
-Route::resource('positions', PositionController::class);
-
-
+Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::resource('employees', EmployerController::class);
+    Route::resource('positions', PositionController::class);
+});

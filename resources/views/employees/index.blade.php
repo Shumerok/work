@@ -73,7 +73,7 @@
                                                 {{$employee->name}}
                                             </td>
                                             <td>
-                                                {{$employee->position}}
+                                                {{$employee->position->name}}
                                             </td>
                                             <td>
                                                 {{$employee->date_employment}}

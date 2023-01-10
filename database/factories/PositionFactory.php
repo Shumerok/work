@@ -17,7 +17,7 @@ class PositionFactory extends Factory
     public function definition()
     {
         return [
-            'name'=> $this->faker->unique()->randomElement(['Frontend dev', 'Backend dev', 'Lead designe', 'Team Lead', 'Tech Lead', 'CEO'])
+            'name'=> $this->faker->unique()->randomElement(['Frontend dev', 'Backend dev', 'Lead designer', 'Team Lead', 'Tech Lead', 'CEO'])
         ];
     }
 }

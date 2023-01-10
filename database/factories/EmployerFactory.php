@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Position;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,13 +19,25 @@ class EmployerFactory extends Factory
     public function definition()
     {
         return [
-            'photo'=>$this->faker->imageUrl(300,300),
-            'name'=>$this->faker->name,
-            'position_id'=>null,
-            'date_employment' => date('d.m.Y'),
-            'phone'=>$this->faker->regexify("^(\+380\ ((93)) [0-9]{3} [0-9]{2} [0-9]{2}$"),
-            'email'=>$this->faker->unique()->email,
-            'salary'=>$this->faker->randomFloat(2,0, 500)
+            'photo' => $this->faker->imageUrl(300, 300),
+            'name' => $this->faker->name,
+            'position_id' => fake()->randomElement(Position::all()->pluck('id')),
+            'date_employment' => date('Y-m-d'),
+            'phone'=>$this->phoneGenerator(),
+            'email' => $this->faker->unique()->email,
+            'salary' => $this->faker->randomFloat(null, 1, 500),
+            'admin_created_id'=>fake()->randomElement(User::all()->pluck('id')),
+            'admin_updated_id'=>fake()->randomElement(User::all()->pluck('id')),
         ];
+    }
+
+    private function phoneGenerator()
+    {
+        $code = '+380';
+        $code .= ' (93) ';
+        $code .= rand(100,999);
+        $code .= ' '.  rand(10,99);
+        $code .= ' '.  rand(10,99);
+        return $code;
     }
 }
