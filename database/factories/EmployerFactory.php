@@ -22,12 +22,12 @@ class EmployerFactory extends Factory
             'photo' => $this->faker->imageUrl(300, 300),
             'name' => $this->faker->name,
             'position_id' => fake()->randomElement(Position::all()->pluck('id')),
-            'date_employment' => date('Y-m-d'),
-            'phone'=>$this->phoneGenerator(),
+            'date_employment' => now()->format('Y-m-d'),
+            'phone' => $this->phoneGenerator(),
             'email' => $this->faker->unique()->email,
             'salary' => $this->faker->randomFloat(null, 1, 500),
-            'admin_created_id'=>fake()->randomElement(User::all()->pluck('id')),
-            'admin_updated_id'=>fake()->randomElement(User::all()->pluck('id')),
+            'admin_created_id' => fake()->randomElement(User::all()->pluck('id')),
+            'admin_updated_id' => fake()->randomElement(User::all()->pluck('id')),
         ];
     }
 
@@ -35,9 +35,9 @@ class EmployerFactory extends Factory
     {
         $code = '+380';
         $code .= ' (93) ';
-        $code .= rand(100,999);
-        $code .= ' '.  rand(10,99);
-        $code .= ' '.  rand(10,99);
+        $code .= rand(100, 999);
+        $code .= ' '.rand(10, 99);
+        $code .= ' '.rand(10, 99);
         return $code;
     }
 }

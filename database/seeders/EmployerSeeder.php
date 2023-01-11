@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Employer;
-use Database\Factories\EmployerFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EmployerSeeder extends Seeder
@@ -16,6 +14,19 @@ class EmployerSeeder extends Seeder
      */
     public function run()
     {
-        Employer::factory(50)->create();
+        Employer::factory(100)
+            ->create()
+            ->each(function ($employee) {
+                $employee->children()->saveMany(Employer::factory(1)->make())
+                    ->each(callback: function ($employee) {
+                        $employee->children()->saveMany(Employer::factory(1)->make())
+                            ->each(callback: function ($employee) {
+                                $employee->children()->saveMany(Employer::factory(1)->make())
+                                    ->each(callback: function ($employee) {
+                                        $employee->children()->saveMany(Employer::factory(1)->make());
+                                    });
+                            });
+                    });
+            });
     }
 }
