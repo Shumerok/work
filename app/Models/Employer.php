@@ -18,6 +18,10 @@ class Employer extends Model
     {
         return $this->belongsTo(Position::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class,'admin_created_id','id');
+    }
 
     public function getDateEmploymentAttribute($value)
     {

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('date_employment');
             $table->string('phone', 15);
             $table->string('email')->unique()->nullable(false);
-            $table->float('salary');
+            $table->float('salary',6,3);
             $table->nestedSet();
             $table->timestamps();
             $table->unsignedBigInteger('admin_created_id')->nullable();

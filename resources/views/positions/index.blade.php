@@ -39,15 +39,15 @@
                                 <table id="position-table" class="table table-striped projects">
                                     <thead>
                                     <tr>
-                                        <th>
+                                        <th style="width: 70%">
                                            Name
                                         </th>
-                                        <th>
+                                        <th style="width: 20%">
                                             Date
                                         </th>
-{{--                                        <th style="width: 20%" class="text-center" colspan="3">--}}
-{{--                                            Actions--}}
-{{--                                        </th>--}}
+                                        <th>
+                                            Actions
+                                        </th>
 
                                     </tr>
                                     </thead>
@@ -60,26 +60,25 @@
                                             <td>
                                                 {{$position->updated_at->format('d.m.Y')}}
                                             </td>
-{{--                                            <td>--}}
-{{--                                                <a class="btn btn-primary btn-sm"--}}
-{{--                                                   href="{{route('positions.show',$position->id)}}">--}}
-{{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
-{{--                                            </td>--}}
-{{--                                            <td>--}}
-{{--                                                <a class="btn btn-info btn-sm"--}}
-{{--                                                   href="{{route('positions.edit',$position->id)}}">--}}
-{{--                                                    <i class="fas fa-pencil-alt mr-1"></i>Edit</a>--}}
-{{--                                            </td>--}}
-{{--                                            <td>--}}
-{{--                                                <form action="{{route('positions.destroy', $position->id)}}" class="mr-15"--}}
-{{--                                                      method="POST">--}}
-{{--                                                    @csrf--}}
-{{--                                                    @method('DELETE')--}}
-{{--                                                    <button type="submit" class="btn btn-danger btn-sm">--}}
-{{--                                                        <i class="fas fa-trash mr-1 " role="button"></i>Delete--}}
-{{--                                                    </button>--}}
-{{--                                                </form>--}}
-{{--                                            </td>--}}
+                                            <td>
+                                                {{--                                                <a class="btn btn-primary btn-sm"--}}
+                                                {{--                                                   href="{{route('employees.show',$employee->id)}}">--}}
+                                                {{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
+                                                <div class="row">
+                                                    <a class="btn btn-info btn-sm mr-3"
+                                                       href="{{route('positions.edit',$position->id)}}">
+                                                        <i class="fas fa-pencil-alt mr-1"></i></a>
+                                                    <form action="{{route('positions.destroy', $position->id)}}"
+                                                          class="mr-15"
+                                                          method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash mr-1 " role="button"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -39,30 +39,30 @@
                                 <table id="employee" class="table table-striped projects">
                                     <thead>
                                     <tr>
-                                        <th >
+                                        <th>
                                             Photo
                                         </th>
-                                        <th >
+                                        <th>
                                             Name
                                         </th>
-                                        <th >
+                                        <th>
                                             Position
                                         </th>
-                                        <th >
+                                        <th>
                                             Date employment
                                         </th>
-                                        <th >
+                                        <th>
                                             Phone
                                         </th>
-                                        <th >
+                                        <th>
                                             Email
                                         </th>
-                                        <th >
+                                        <th>
                                             Salary
                                         </th>
-                                        {{--                                        <th style="width: 20%" class="text-center" colspan="3">--}}
-                                        {{--                                            Actions--}}
-                                        {{--                                        </th>--}}
+                                        <th class="text-center">
+                                            Actions
+                                        </th>
 
                                     </tr>
                                     </thead>
@@ -70,7 +70,7 @@
                                     @foreach($employees as $employee)
                                         <tr>
                                             <td>
-                                                <img src="{{$employee->photo}}" alt="photo" width="50px">
+                                                <img src="{{$employee->photo}}" alt="photo" width="40px">
                                             </td>
                                             <td>
                                                 {{$employee->name}}
@@ -88,29 +88,28 @@
                                                 {{$employee->email}}
                                             </td>
                                             <td>
-                                                {{$employee->salary}}
+                                                {{'$'. number_format($employee->salary,3)}}
                                             </td>
-                                            {{--                                            <td>--}}
-                                            {{--                                                <a class="btn btn-primary btn-sm"--}}
-                                            {{--                                                   href="{{route('employees.show',$employee->id)}}">--}}
-                                            {{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
-                                            {{--                                            </td>--}}
-                                            {{--                                            <td>--}}
-                                            {{--                                                <a class="btn btn-info btn-sm"--}}
-                                            {{--                                                   href="{{route('employees.edit',$employee->id)}}">--}}
-                                            {{--                                                    <i class="fas fa-pencil-alt mr-1"></i>Edit</a>--}}
-                                            {{--                                            </td>--}}
-                                            {{--                                            <td>--}}
-                                            {{--                                                <form action="{{route('employees.destroy', $employee->id)}}"--}}
-                                            {{--                                                      class="mr-15"--}}
-                                            {{--                                                      method="POST">--}}
-                                            {{--                                                    @csrf--}}
-                                            {{--                                                    @method('DELETE')--}}
-                                            {{--                                                    <button type="submit" class="btn btn-danger btn-sm">--}}
-                                            {{--                                                        <i class="fas fa-trash mr-1 " role="button"></i>Delete--}}
-                                            {{--                                                    </button>--}}
-                                            {{--                                                </form>--}}
-                                            {{--                                            </td>--}}
+                                            <td>
+                                                {{--                                                <a class="btn btn-primary btn-sm"--}}
+                                                {{--                                                   href="{{route('employees.show',$employee->id)}}">--}}
+                                                {{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
+                                                <div class="row">
+                                                    <a class="btn btn-info btn-sm mr-3"
+                                                       href="{{route('employees.edit',$employee->id)}}">
+                                                        <i class="fas fa-pencil-alt mr-1"></i></a>
+                                                    <form action="{{route('employees.destroy', $employee->id)}}"
+                                                          class="mr-15"
+                                                          method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash mr-1 " role="button"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+
                                         </tr>
                                     @endforeach
                                     </tbody>

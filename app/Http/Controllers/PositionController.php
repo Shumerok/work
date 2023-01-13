@@ -40,8 +40,10 @@ class PositionController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy(Position $position)
     {
-        //
+        $position->delete();
+
+        return redirect()->route('positions.index');
     }
 }

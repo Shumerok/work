@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::post('/employees/getEmployees/',[EmployerController::class, 'getEmployees'])->name('employees.getEmployees');
     Route::resource('employees', EmployerController::class);
     Route::resource('positions', PositionController::class);
 });
