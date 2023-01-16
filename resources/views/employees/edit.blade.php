@@ -25,13 +25,15 @@
                 <div class="row">
                     <div class="col-4 border">
                         <div class="mt-2">
-                            <h3>Add employee</h3>
+                            <h3>Edit employee</h3>
                         </div><!-- /.col -->
-                        <form action="{{route('employers.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('employers.update',$employer->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PATCH')
                             <div class="form-group">
                                 <label>Photo</label>
                                 <div class="form-group">
+                                    <img class="mb-2" src="{{$employer->photo}}" alt="photo" width="150px">
                                     <input type="file" class="form-group" name="photo">
                                 </div>
                                 @error('photo')
@@ -43,7 +45,7 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" class="form-control" name="name" placeholder="Name of employee"
-                                       value="{{old('name')}}">
+                                       value="{{$employer->name}}">
                                 @error('name')
                                 <div class="text-danger">
                                     {{$message}}
@@ -52,7 +54,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" class="form-control" name="phone" placeholder="+380 (XX) XXX XX XX">
+                                <input type="text" class="form-control" name="phone" placeholder="+380 (XX) XXX XX XX" value="{{$employer->phone}}">
                                 @error('phone')
                                 <div class="text-danger">
                                     {{$message}}
@@ -61,7 +63,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="text" class="form-control" name="email" placeholder="Email">
+                                <input type="text" class="form-control" name="email" placeholder="Email" value="{{$employer->email}}">
                                 @error('email')
                                 <div class="text-danger">
                                     {{$message}}
@@ -71,6 +73,7 @@
                             <div class="form-group">
                                 <label>Position</label>
                                 <select name="position_id" class="form-control">
+                                    <option value="{{$employer->position->id}}">{{$employer->position->name}}</option>
                                     <option value="">None</option>
                                     @foreach($positions as $position)
                                         <option value="{{$position->id}}">
@@ -80,7 +83,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Salary, $</label>
-                                <input type="text" class="form-control" name="salary" placeholder="500 max">
+                                <input type="text" class="form-control" name="salary" placeholder="500 max" value="{{$employer->salary}}">
                                 @error('salary')
                                 <div class="text-danger">
                                     {{$message}}
@@ -89,7 +92,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Head</label>
-                                <input class="form-control" id="employee_search" type="text" name="head"
+                                <input class="form-control" id="employee_search" type="text" name="head" value="{{$employer->parent()->pluck('name')->implode(',')}}"
                                        placeholder="Start to autocomplete">
                                 @error('head')
                                 <div class="text-danger">
@@ -100,16 +103,27 @@
                             <div class="form-group">
                                 <label>Date of employment</label>
                                 <input id="datepicker" type="text" class="form-control" name="date_employment"
-                                       placeholder="date">
+                                       placeholder="date" value="{{$employer->date_employment}}">
                                 @error('date_employment')
                                 <div class="text-danger">
                                     {{$message}}
                                 </div>
                                 @enderror
                             </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Created at:</label> {{$employer->created_at->format('d.m.Y')}}
+                                    <br>
+                                    <label>Updated at:</label> {{$employer->updated_at->format('d.m.Y')}}
+                                </div>
+                                <div class="col-4 ml-auto">
+                                    <label>Admin created at:</label> {{$employer->admin_created_id}}
+                                    <br>
+                                    <label>Admin updated at:</label> {{$employer->admin_updated_id}}
+                                </div>
+                            </div>
                             @if(auth()->user())
-                                <div class="form-group">
-                                    <input name="admin_created_id" type="hidden" value="{{auth()->user()->id}}">
+                                <div class="form-group hide">
                                     <input name="admin_updated_id" type="hidden" value="{{auth()->user()->id}}">
                                 </div>
                             @endif

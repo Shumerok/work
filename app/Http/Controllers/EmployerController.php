@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployerRequest;
+use App\Http\Requests\Employer\StoreRequest;
+use App\Http\Requests\Employer\UpdateRequest;
 use App\Models\Employer;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -12,70 +13,60 @@ class EmployerController extends Controller
 
     public function index()
     {
-//        $employees = Employer::get()->toTree();
-//
-//        $traverse = function ($categories, $prefix = '-') use (&$traverse) {
-//            foreach ($categories as $category) {
-//                echo PHP_EOL.$prefix.' '.$category->name . " ($category->id)";
-//                echo "<br>";
-//                $traverse($category->children, $prefix.'-');
-//            }
-//        };
-//
-//        $traverse($employees);
-
         $employees = Employer::all();
-//        dd($employees->user->name);
         return view('employees.index', compact('employees'));
     }
 
     public function create()
     {
-        $employees = Employer::all()->pluck('name', 'id')->toArray();
-
-//        dd($employees);
         $positions = Position::all();
-        return view('employees.create', compact('positions', 'employees'));
+        return view('employees.create', compact('positions'));
     }
 
-    public function store(EmployerRequest $request)
+    public function store(StoreRequest $request)
     {
-//        dd($request->toArray());
         $data = $request->validated();
-//        dd($data);
+        $head = $data['head'];
         unset($data['head']);
-        Employer::firstOrCreate($data);
+        $employer = Employer::firstOrCreate($data);
 
-        return redirect()->route('employees.index');
+        $employer->parent_id = $head;
+        $employer->save();
+
+        return redirect()->route('employers.index');
     }
 
     public function show($id)
     {
-        //
     }
 
-    public function edit($id)
+    public function edit(Employer $employer)
     {
-        //
+        $positions = Position::all();
+        return view('employees.edit', compact('employer', 'positions'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Employer $employer)
     {
-        //
+        $data = $request->validated();
+        $parent = Employer::find($data['head']);
+
+//        $employer->parent()->associate($parent)->save();
+        $employer->parent_id = $data['head'];
+        $employer->save();
+
+        return redirect()->route('employers.index');
     }
 
     public function destroy(Employer $employer)
     {
         $employer->delete();
-        return redirect()->route('employees.index');
+
+        return redirect()->route('employers.index');
     }
 
-    /*
-   AJAX request
-   */
     public function getEmployees(Request $request)
     {
-//        dd($request);
         $search = $request->search;
 
         if ($search == '') {
@@ -94,5 +85,20 @@ class EmployerController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function buildTree()
+    {
+        $employees = Employer::withDepth()->get()->toTree();
+
+        $traverse = function ($categories, $prefix = '-') use (&$traverse) {
+            foreach ($categories as $category) {
+                echo PHP_EOL.$prefix.' '.$category->name." ($category->id) . level = $category->depth";
+                echo "<br>";
+                $traverse($category->children, $prefix.'-');
+            }
+        };
+
+        $traverse($employees);
     }
 }

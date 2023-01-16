@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Position\StoreRequest;
+use App\Http\Requests\Position\UpdateRequest;
 use App\Models\Position;
-use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
@@ -17,12 +18,14 @@ class PositionController extends Controller
 
     public function create()
     {
-        //
+        return view('positions.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        Position::firstOrCreate($data);
+        return redirect()->route('positions.index');
     }
 
     public function show($id)
@@ -30,14 +33,16 @@ class PositionController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(Position $position)
     {
-        //
+        return view('positions.edit', compact('position'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Position $position)
     {
-        //
+        $data = $request->validated();
+        $position->update($data);
+        return redirect()->route('positions.index');
     }
 
     public function destroy(Position $position)

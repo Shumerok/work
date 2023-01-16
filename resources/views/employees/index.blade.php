@@ -1,23 +1,23 @@
 @extends('layouts.main')
 @section('css-table')
+
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
+                <div class="row ">
+                    <div class="ml-2">
                         <h1 class="m-0">Employees</h1>
                     </div><!-- /.col -->
-                    {{--                    <div class="col-sm-6">--}}
-                    {{--                        <ol class="breadcrumb float-sm-right">--}}
-                    {{--                            <li class="breadcrumb-item"><a href="#">Home</a></li>--}}
-                    {{--                            <li class="breadcrumb-item active">Courses</li>--}}
-                    {{--                        </ol>--}}
-                    {{--                    </div><!-- /.col -->--}}
+
+                    <div class=" ml-auto mr-2">
+                        <a href="{{route('employers.create')}}" class="btn btn-block btn-secondary btn-flat">Add Employee</a>
+                    </div>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -28,9 +28,7 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="btn-default ml-2">
-                        <a href="{{route('employees.create')}}" class="btn-block btn-primary btn-lg">Add Employee</a>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-12 mt-2">
@@ -67,28 +65,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($employees as $employee)
+                                    @foreach($employees as $employer)
                                         <tr>
                                             <td>
-                                                <img src="{{$employee->photo}}" alt="photo" width="40px">
+                                                <img src="{{$employer->photo}}" alt="photo" width="40px">
                                             </td>
                                             <td>
-                                                {{$employee->name}}
+                                                {{$employer->name}}
                                             </td>
                                             <td>
-                                                {{$employee->position->name}}
+                                                {{$employer->position()->pluck('name')->implode(',')}}
                                             </td>
                                             <td>
-                                                {{date($employee->date_employment)}}
+                                                {{date($employer->date_employment)}}
                                             </td>
                                             <td>
-                                                {{$employee->phone}}
+                                                {{$employer->phone}}
                                             </td>
                                             <td>
-                                                {{$employee->email}}
+                                                {{$employer->email}}
                                             </td>
                                             <td>
-                                                {{'$'. number_format($employee->salary,3)}}
+                                                {{'$'. number_format($employer->salary,3)}}
                                             </td>
                                             <td>
                                                 {{--                                                <a class="btn btn-primary btn-sm"--}}
@@ -96,9 +94,9 @@
                                                 {{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
                                                 <div class="row">
                                                     <a class="btn btn-info btn-sm mr-3"
-                                                       href="{{route('employees.edit',$employee->id)}}">
+                                                       href="{{route('employers.edit',$employer->id)}}">
                                                         <i class="fas fa-pencil-alt mr-1"></i></a>
-                                                    <form action="{{route('employees.destroy', $employee->id)}}"
+                                                    <form action="{{route('employers.destroy', $employer->id)}}"
                                                           class="mr-15"
                                                           method="POST">
                                                         @csrf

@@ -25,6 +25,6 @@ class Employer extends Model
 
     public function getDateEmploymentAttribute($value)
     {
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['date_employment'])->format('m.d.Y');
+        return Carbon::createFromFormat('Y-m-d', $this->attributes['date_employment'])->format('d.m.Y');
     }
 }

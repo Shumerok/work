@@ -8,16 +8,14 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row ">
                     <div class="ml-2">
-                        <h1>Positions</h1>
+                        <h1 class="m-0">Positions</h1>
                     </div><!-- /.col -->
-{{--                    <div class="col-sm-6">--}}
-{{--                        <ol class="breadcrumb float-sm-right">--}}
-{{--                            <li class="breadcrumb-item"><a href="#">Home</a></li>--}}
-{{--                            <li class="breadcrumb-item active">Courses</li>--}}
-{{--                        </ol>--}}
-{{--                    </div><!-- /.col -->--}}
+
+                    <div class=" ml-auto mr-2">
+                        <a href="{{route('positions.create')}}" class="btn btn-block btn-secondary btn-flat">Add position</a>
+                    </div>
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -28,11 +26,6 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="ml-2" >
-                        <a href="{{route('positions.create')}}" class="btn-block btn-primary btn-lg">Add Position</a>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-12 mt-2">
                         <div class="card">
                             <div class="card-body">
@@ -40,7 +33,7 @@
                                     <thead>
                                     <tr>
                                         <th style="width: 70%">
-                                           Name
+                                            Name
                                         </th>
                                         <th style="width: 20%">
                                             Date
@@ -93,6 +86,29 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    Modal body..
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @push('js-table')

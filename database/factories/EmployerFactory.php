@@ -20,7 +20,7 @@ class EmployerFactory extends Factory
     {
         return [
             'photo' => $this->faker->imageUrl(300, 300),
-            'name' => $this->faker->name,
+            'name' => $this->faker->firstName.' '.$this->faker->lastName,
             'position_id' => fake()->randomElement(Position::all()->pluck('id')),
             'date_employment' => now()->format('Y-m-d'),
             'phone' => $this->phoneGenerator(),

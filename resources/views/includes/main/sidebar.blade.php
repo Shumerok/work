@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('employees.index')}}" class="nav-link">
+                    <a href="{{route('employers.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Employers
@@ -33,6 +33,14 @@
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             Positions
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('employees.buildTree')}}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                           Build Tree
                         </p>
                     </a>
                 </li>
