@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employer>
@@ -19,7 +20,7 @@ class EmployerFactory extends Factory
     public function definition()
     {
         return [
-            'photo' => $this->faker->imageUrl(300, 300),
+            'photo' => '/avatars/3551739.jpg',
             'name' => $this->faker->firstName.' '.$this->faker->lastName,
             'position_id' => fake()->randomElement(Position::all()->pluck('id')),
             'date_employment' => now()->format('Y-m-d'),

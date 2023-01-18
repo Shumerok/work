@@ -68,7 +68,7 @@
                                     @foreach($employees as $employer)
                                         <tr>
                                             <td>
-                                                <img src="{{$employer->photo}}" alt="photo" width="40px">
+                                                <img src="{{asset('storage/'. $employer->photo)}}" alt="photo" width="40px">
                                             </td>
                                             <td>
                                                 {{$employer->name}}

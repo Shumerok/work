@@ -14,7 +14,7 @@ class EmployerSeeder extends Seeder
      */
     public function run()
     {
-        Employer::factory(100)
+        Employer::factory(5)
             ->create()
             ->each(function ($employee) {
                 $employee->children()->saveMany(Employer::factory(1)->make())

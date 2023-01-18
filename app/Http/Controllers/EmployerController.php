@@ -7,6 +7,7 @@ use App\Http\Requests\Employer\UpdateRequest;
 use App\Models\Employer;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmployerController extends Controller
 {
@@ -27,6 +28,7 @@ class EmployerController extends Controller
     {
         $data = $request->validated();
         $head = $data['head'];
+        $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
         unset($data['head']);
         $employer = Employer::firstOrCreate($data);
 
@@ -49,18 +51,34 @@ class EmployerController extends Controller
     public function update(UpdateRequest $request, Employer $employer)
     {
         $data = $request->validated();
-        $parent = Employer::find($data['head']);
-
-//        $employer->parent()->associate($parent)->save();
+        $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
         $employer->parent_id = $data['head'];
+        unset($data['head']);
         $employer->save();
+        $employer->update($data);
+
 
         return redirect()->route('employers.index');
     }
 
     public function destroy(Employer $employer)
     {
-        $employer->delete();
+        if (!$employer->children->first()) {
+            $employer->delete();
+        }
+
+        if ($employer->parent && $employer->children->first()) {
+            $parent = $employer->parent;
+            $children = $employer->children->first();
+            $parent->appendNode($children);
+            $parent->save();
+            $employer->delete();
+        }
+
+        if ($employer->isRoot() && $employer->children->first() == null) {
+            $employer->delete();
+        }
+
 
         return redirect()->route('employers.index');
     }
