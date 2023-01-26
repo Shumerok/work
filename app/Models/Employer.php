@@ -18,13 +18,24 @@ class Employer extends Model
     {
         return $this->belongsTo(Position::class);
     }
+
     public function user()
     {
-        return $this->belongsTo(User::class,'admin_created_id','id');
+        return $this->belongsTo(User::class, 'admin_created_id', 'id');
     }
 
-    public function getDateEmploymentAttribute($value)
-    {
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['date_employment'])->format('d.m.Y');
-    }
+//    public function getDateEmploymentAttribute($value)
+//    {
+//        return Carbon::createFromFormat('Y-m-d', $this->attributes['date_employment'])->format('d.m.Y');
+//    }
+
+//    public function setDateEmploymentAttribute($value)
+//    {
+//        return Carbon::createFromFormat('d.m.Y', $this->attributes['date_employment'])->format('yy-m-d');
+//    }
+//    public function getSalaryAttribute($value)
+//    {
+//        return '$'.number_format($this->attributes['salary'], 3);
+//    }
+
 }

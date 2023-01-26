@@ -6,17 +6,20 @@ use App\Http\Requests\Employer\StoreRequest;
 use App\Http\Requests\Employer\UpdateRequest;
 use App\Models\Employer;
 use App\Models\Position;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class EmployerController extends Controller
 {
 
     public function index()
     {
-        $employees = Employer::all();
-        return view('employees.index', compact('employees'));
+        return view('employees.index');
     }
+
 
     public function create()
     {
@@ -48,9 +51,10 @@ class EmployerController extends Controller
         return view('employees.edit', compact('employer', 'positions'));
     }
 
-    public function update(UpdateRequest $request, Employer $employer)
+    public function update(UpdateRequest $updateRequest, Employer $employer): RedirectResponse
     {
-        $data = $request->validated();
+        $data = $updateRequest->validated();
+        dd($data);
         $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
         $employer->parent_id = $data['head'];
         unset($data['head']);
@@ -61,8 +65,11 @@ class EmployerController extends Controller
         return redirect()->route('employers.index');
     }
 
-    public function destroy(Employer $employer)
+    public function destroy($id)
     {
+        $employer = Employer::findOrFail($id);
+
+//        dd($employer);
         if (!$employer->children->first()) {
             $employer->delete();
         }
@@ -78,9 +85,7 @@ class EmployerController extends Controller
         if ($employer->isRoot() && $employer->children->first() == null) {
             $employer->delete();
         }
-
-
-        return redirect()->route('employers.index');
+//        return redirect()->route('employers.index');
     }
 
     public function getEmployees(Request $request)
@@ -118,5 +123,21 @@ class EmployerController extends Controller
         };
 
         $traverse($employees);
+
+//        $employees = Employer::with('position')
+//            ->get()->toJson(JSON_PRETTY_PRINT);
+//
+//        dd($employees);
+    }
+
+    public function getData(): JsonResponse
+    {
+        $employees = Employer::with('position');
+
+        return Datatables::of($employees)
+            ->addColumn('action', function ($employees) {
+                return '<a href="'.route('employers.edit', $employees->id).'"class="btn btn-info btn-sm mr-3 edit id="'.$employees->id.'"><i class="fas fa-pencil-alt mr-1"></i> </a>
+                        <button type="button" name="'.$employees->name.'" id="'.$employees->id.'" class="delete btn btn-danger btn-sm"> <i class="fas fa-trash mr-1 " role="button"></i></button>';
+            })->make();
     }
 }

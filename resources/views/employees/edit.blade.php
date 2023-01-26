@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('css-table')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+{{--    <link rel="stylesheet" href="/resources/demos/style.css">--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
@@ -27,8 +27,7 @@
                             <div class="mt-2">
                                 <h3>Edit employee</h3>
                             </div><!-- /.col -->
-                            <form action="{{route('employers.update',$employer->id)}}" method="POST"
-                                  enctype="multipart/form-data">
+                            <form action="{{route('employers.update', $employer->id)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
@@ -77,7 +76,7 @@
                                 <div class="form-group">
                                     <label>Position</label>
                                     <select name="position_id" class="form-control">
-                                        <option value="{{$employer->position->id}}">{{$employer->position->name}}</option>
+                                        <option value="{{$employer->position()->pluck('id')}}">{{$employer->position()->pluck('name')->implode(',')}}</option>
                                         <option value="">None</option>
                                         @foreach($positions as $position)
                                             <option value="{{$position->id}}">
@@ -153,27 +152,28 @@
             <!-- /.content -->
         </div>
         <!-- ./wrapper -->
-        @endsection
-        @push('js-table')
-            <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-            <script>
-                $(function () {
-                    $("#datepicker").datepicker({dateFormat: 'yy-m-d'}).val();
-                });
-            </script>
-            <!-- Script -->
-            <script type="text/javascript">
+    </div>
+@endsection
+@push('js-table')
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({ dateFormat: 'yy-m-d' }).val();
+        });
+    </script>
+    <!-- Script -->
+    <script type="text/javascript">
 
-                // CSRF Token
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $(document).ready(function () {
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function () {
 
-                    $("#employee_search").autocomplete({
-                        source: function (request, response) {
-                            // Fetch data
-                            $.ajax({
-                                url: "{{route('employees.getEmployees')}}",
+            $("#employee_search").autocomplete({
+                source: function (request, response) {
+                    // Fetch data
+                    $.ajax({
+                        url: "{{route('employees.getEmployees')}}",
                         type: 'post',
                         dataType: "json",
                         data: {
