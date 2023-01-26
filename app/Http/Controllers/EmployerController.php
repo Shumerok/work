@@ -6,138 +6,67 @@ use App\Http\Requests\Employer\StoreRequest;
 use App\Http\Requests\Employer\UpdateRequest;
 use App\Models\Employer;
 use App\Models\Position;
+use App\Services\EmployerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
+use Illuminate\View\View;
 
 class EmployerController extends Controller
 {
+    private EmployerService $service;
 
-    public function index()
+    public function __construct(EmployerService $service)
+    {
+        $this->service = $service;
+    }
+
+    public function index(): View
     {
         return view('employees.index');
     }
 
-
-    public function create()
+    public function create(): View
     {
         $positions = Position::all();
         return view('employees.create', compact('positions'));
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $head = $data['head'];
-        $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
-        unset($data['head']);
-        $employer = Employer::firstOrCreate($data);
-
-        $employer->parent_id = $head;
-        $employer->save();
-
+        $this->service->store($data);
         return redirect()->route('employers.index');
     }
 
-    public function show($id)
-    {
-    }
-
-    public function edit(Employer $employer)
+    public function edit(Employer $employer): View
     {
         $positions = Position::all();
         return view('employees.edit', compact('employer', 'positions'));
     }
 
-    public function update(UpdateRequest $updateRequest, Employer $employer): RedirectResponse
+    public function update(UpdateRequest $request, Employer $employer): RedirectResponse
     {
-        $data = $updateRequest->validated();
-        dd($data);
-        $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
-        $employer->parent_id = $data['head'];
-        unset($data['head']);
-        $employer->save();
-        $employer->update($data);
-
-
+        $data = $request->validated();
+        $this->service->update($data, $employer);
         return redirect()->route('employers.index');
     }
 
-    public function destroy($id)
+    public function destroy($id): void
     {
         $employer = Employer::findOrFail($id);
-
-//        dd($employer);
-        if (!$employer->children->first()) {
-            $employer->delete();
-        }
-
-        if ($employer->parent && $employer->children->first()) {
-            $parent = $employer->parent;
-            $children = $employer->children->first();
-            $parent->appendNode($children);
-            $parent->save();
-            $employer->delete();
-        }
-
-        if ($employer->isRoot() && $employer->children->first() == null) {
-            $employer->delete();
-        }
-//        return redirect()->route('employers.index');
+        $this->service->delete($employer);
     }
 
-    public function getEmployees(Request $request)
+    public function getEmployees(Request $request): JsonResponse
     {
         $search = $request->search;
-
-        if ($search == '') {
-            $employees = Employer::orderby('name', 'asc')->select('id', 'name')->limit(5)->get();
-        } else {
-            $employees = Employer::orderby('name', 'asc')->select('id', 'name')->where(
-                'name',
-                'like',
-                '%'.$search.'%'
-            )->limit(5)->get();
-        }
-
-        $response = array();
-        foreach ($employees as $employee) {
-            $response[] = array("value" => $employee->id, "label" => $employee->name);
-        }
-
-        return response()->json($response);
+        return $this->service->getAutocompleteData($search);
     }
 
-    public function buildTree()
+    public function getAjaxData(): JsonResponse
     {
-        $employees = Employer::withDepth()->get()->toTree();
-
-        $traverse = function ($categories, $prefix = '-') use (&$traverse) {
-            foreach ($categories as $category) {
-                echo PHP_EOL.$prefix.' '.$category->name." ($category->id) . level = $category->depth";
-                echo "<br>";
-                $traverse($category->children, $prefix.'-');
-            }
-        };
-
-        $traverse($employees);
-
-//        $employees = Employer::with('position')
-//            ->get()->toJson(JSON_PRETTY_PRINT);
-//
-//        dd($employees);
-    }
-
-    public function getData(): JsonResponse
-    {
-        $employees = Employer::with('position');
-
-        return Datatables::of($employees)
-            ->addColumn('action', function ($employees) {
-                return '<a href="'.route('employers.edit', $employees->id).'"class="btn btn-info btn-sm mr-3 edit id="'.$employees->id.'"><i class="fas fa-pencil-alt mr-1"></i> </a>
-                        <button type="button" name="'.$employees->name.'" id="'.$employees->id.'" class="delete btn btn-danger btn-sm"> <i class="fas fa-trash mr-1 " role="button"></i></button>';
-            })->make();
+        $employees = Employer::with('position')->orderBy('id');
+        return $this->service->getIndexData($employees);
     }
 }

@@ -28,11 +28,6 @@ class PositionController extends Controller
         return redirect()->route('positions.index');
     }
 
-    public function show($id)
-    {
-        //
-    }
-
     public function edit(Position $position)
     {
         return view('positions.edit', compact('position'));

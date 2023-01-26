@@ -31,8 +31,14 @@
                             @csrf
                             <div class="form-group">
                                 <label>Photo</label>
-                                <div class="form-group">
-                                    <input type="file" class="form-group" name="photo">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="photo" id="exampleInputFile" value="{{old('photo')}}">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
                                 </div>
                                 @error('photo')
                                 <div class="text-danger">
@@ -52,7 +58,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" class="form-control" name="phone" placeholder="+380 (XX) XXX XX XX">
+                                <input type="text" class="form-control" name="phone" placeholder="+380 (XX) XXX XX XX" value="{{old('phone')}}">
                                 @error('phone')
                                 <div class="text-danger">
                                     {{$message}}
@@ -61,7 +67,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="text" class="form-control" name="email" placeholder="Email">
+                                <input type="text" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
                                 @error('email')
                                 <div class="text-danger">
                                     {{$message}}
@@ -73,14 +79,14 @@
                                 <select name="position_id" class="form-control">
                                     <option value="">None</option>
                                     @foreach($positions as $position)
-                                        <option value="{{$position->id}}">
+                                        <option value="{{$position->id}}" {{$position->id == old('position_id') ? ' selected' : ''}}>
                                             {{$position->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Salary, $</label>
-                                <input type="text" class="form-control" name="salary" placeholder="500 max">
+                                <input type="text" class="form-control" name="salary" placeholder="500 max" value="{{old('salary')}}">
                                 @error('salary')
                                 <div class="text-danger">
                                     {{$message}}
@@ -89,7 +95,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Head</label>
-                                <input class="form-control" id="employee_search" type="text" name="head"
+                                <input class="form-control" id="employee_search" type="text" name="headName" value="{{old('headName')}}"
+                                       placeholder="Start to autocomplete">
+                                <input class="form-control" id="head" type="hidden" name="head"
+                                       value="{{old('head')}}"
                                        placeholder="Start to autocomplete">
                                 @error('head')
                                 <div class="text-danger">
@@ -99,7 +108,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Date of employment</label>
-                                <input id="datepicker" type="text" class="form-control" name="date_employment"
+                                <input id="datepicker" type="text" class="form-control" name="date_employment" value="{{old('date_employment')}}"
                                        placeholder="date">
                                 @error('date_employment')
                                 <div class="text-danger">
@@ -167,7 +176,7 @@
                 select: function (event, ui) {
                     // Set selection
                     $('#employee_search').val(ui.item.label); // display the selected text
-                    $('#employee_search').val(ui.item.value); // save selected id to input
+                    $('#head').val(ui.item.value); // save selected id to input
                     return false;
                 }
             });

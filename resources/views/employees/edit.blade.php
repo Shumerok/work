@@ -36,7 +36,15 @@
                                         <img class="mb-2" src="{{asset('storage/'. $employer->photo)}}" alt="photo"
                                              width="150px">
                                     </div>
-                                    <input type="file" class="form-group" name="photo">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="photo" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                    </div>
                                     @error('photo')
                                     <div class="text-danger">
                                         {{$message}}
@@ -76,7 +84,7 @@
                                 <div class="form-group">
                                     <label>Position</label>
                                     <select name="position_id" class="form-control">
-                                        <option value="{{$employer->position()->pluck('id')}}">{{$employer->position()->pluck('name')->implode(',')}}</option>
+                                        <option value="{{$employer->position()->pluck('id')->implode(',')}}">{{$employer->position()->pluck('name')->implode(',')}}</option>
                                         <option value="">None</option>
                                         @foreach($positions as $position)
                                             <option value="{{$position->id}}">
@@ -96,8 +104,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Head</label>
-                                    <input class="form-control" id="employee_search" type="text" name="head"
+                                    <input class="form-control" id="employee_search" type="text"
                                            value="{{$employer->parent()->pluck('name')->implode(',')}}"
+                                           placeholder="Start to autocomplete">
+                                    <input class="form-control" id="head" type="hidden" name="head"
+                                           value="{{$employer->parent()->pluck('id')->implode(',')}}"
                                            placeholder="Start to autocomplete">
                                     @error('head')
                                     <div class="text-danger">
@@ -188,7 +199,7 @@
                 select: function (event, ui) {
                     // Set selection
                     $('#employee_search').val(ui.item.label); // display the selected text
-                    $('#employee_search').val(ui.item.value); // save selected id to input
+                    $('#head').val(ui.item.value); // save selected id to input
                     return false;
                 }
             });

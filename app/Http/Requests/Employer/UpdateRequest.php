@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
             'name'=> 'required|string|min:2|max:256|',
             'phone'=> 'required|regex:/^\+380 \([50,93,67]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
             'email'=> 'required|string|email|max:255|',
-            'position_id'=>'required|integer|exists:positions,id',
+            'position_id'=>'nullable|integer|exists:positions,id',
             'salary' => 'required|decimal:0,500',
             'head'=>'nullable|integer|exists:employers,id',
             'date_employment'=> 'required|date:d/m/Y',

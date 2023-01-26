@@ -50,51 +50,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {{--                                    @foreach($employees as $employer)--}}
-                                    {{--                                        <tr>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                <img src="{{asset('storage/'. $employer->photo)}}" alt="photo" width="40px">--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{$employer->name}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{$employer->position()->pluck('name')->implode(',')}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{date($employer->date_employment)}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{$employer->phone}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{$employer->email}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                {{'$'. number_format($employer->salary,3)}}--}}
-                                    {{--                                            </td>--}}
-                                    {{--                                            <td>--}}
-                                    {{--                                                --}}{{--                                                <a class="btn btn-primary btn-sm"--}}
-                                    {{--                                                --}}{{--                                                   href="{{route('employees.show',$employee->id)}}">--}}
-                                    {{--                                                --}}{{--                                                    <i class="fas fa-folder mr-1"></i>View</a>--}}
-                                    {{--                                                <div class="row">--}}
-                                    {{--                                                    <a class="btn btn-info btn-sm mr-3"--}}
-                                    {{--                                                       href="{{route('employers.edit',$employer->id)}}">--}}
-                                    {{--                                                        <i class="fas fa-pencil-alt mr-1"></i></a>--}}
-                                    {{--                                                    <form action="{{route('employers.destroy', $employer->id)}}"--}}
-                                    {{--                                                          class="mr-15"--}}
-                                    {{--                                                          method="POST">--}}
-                                    {{--                                                        @csrf--}}
-                                    {{--                                                        @method('DELETE')--}}
-                                    {{--                                                        <button type="submit" class="btn btn-danger btn-sm">--}}
-                                    {{--                                                            <i class="fas fa-trash mr-1 " role="button"></i>--}}
-                                    {{--                                                        </button>--}}
-                                    {{--                                                    </form>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                            </td>--}}
-
-                                    {{--                                        </tr>--}}
-                                    {{--                                    @endforeach--}}
                                     </tbody>
                                 </table>
                             </div>
@@ -150,7 +105,7 @@
             $('#employee').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{route('employer.getData')}}",
+                "ajax": "{{route('employer.getAjaxData')}}",
                 "columns": [
                     {
                         'data': 'photo',
@@ -163,22 +118,33 @@
                         'data': 'position.name',
                         "defaultContent": "<i>Not set</i>"
                     },
-                    {'data': 'date_employment'},
+                    {'data': 'date_employment',
+                     'render': function (data){
+                        date = new Date(data)
+                        return Intl.DateTimeFormat(undefined, {
+                            year: "numeric",
+                            month: "numeric",
+                            day: "numeric",
+                        }).format(date);
+                     }
+                    },
                     {'data': 'phone'},
                     {'data': 'email'},
-                    {'data': 'salary'},
+                    {
+                        'data': 'salary',
+                        'render': function (data) {
+                            return '$' + data.toFixed(3);
+                        }
+                    },
                     {'data': 'action', orderable: false, searchable: false},
                 ]
             });
 
             var employer_id;
-            var employer_name;
 
             $(document).on('click', '.delete', function () {
                 employer_id = $(this).attr('id');
-                // employer_id = $(this).attr('name');
                 $('#confirmModal').modal('show');
-
             });
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -190,7 +156,7 @@
                     data: {
                         _token: CSRF_TOKEN,
                     },
-                    success: function (data) {
+                    success: function () {
                         $('#confirmModal').modal('hide');
                         $('#employee').DataTable().ajax.reload();
                     }
