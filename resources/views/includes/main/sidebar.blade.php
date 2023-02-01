@@ -36,14 +36,6 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{route('employees.buildTree')}}" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                           Build Tree
-                        </p>
-                    </a>
-                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

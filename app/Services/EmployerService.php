@@ -38,7 +38,7 @@ class EmployerService
             if (isset($data['photo'])) {
                 $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
             }
-            if (isset($data['head'])){
+            if (isset($data['head'])) {
                 $employer->parent_id = $data['head'];
                 unset($data['head']);
             }
@@ -56,6 +56,24 @@ class EmployerService
     {
         try {
             DB::beginTransaction();
+
+            if (($employer->isRoot()) && ($employer->children->first() == null)) {
+                $employer->delete();
+            }
+
+            if ((!$employer->parent) && ($employer->children->first())) {
+                $root = $employer->children->first();
+                $children = $root->children->first();
+
+                if ($children) {
+                    $root->appendNode($children);
+                    $root->save();
+                }
+
+                $root->makeRoot()->save();
+                $employer->delete();
+            }
+
             if (!$employer->children->first()) {
                 $employer->delete();
             }
@@ -68,12 +86,7 @@ class EmployerService
                 $employer->delete();
             }
 
-            if (($employer->isRoot()) && ($employer->children->first() == null)) {
-                $employer->delete();
-            }else{
-                $employer->children->first()->makeRoot()->save();
-                $employer->delete();
-            }
+            Employer::fixTree();
 
             DB::commit();
         } catch (Exception $exception) {
@@ -106,9 +119,9 @@ class EmployerService
             )->limit(5)->get();
         }
 
-        $response = array();
+        $response = [];
         foreach ($employees as $employee) {
-            $response[] = array("value" => $employee->id, "label" => $employee->name);
+            $response[] = ["value" => $employee->id, "label" => $employee->name];
         }
 
         return response()->json($response);

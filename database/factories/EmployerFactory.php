@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employer>
@@ -30,15 +29,5 @@ class EmployerFactory extends Factory
             'admin_created_id' => fake()->randomElement(User::all()->pluck('id')),
             'admin_updated_id' => fake()->randomElement(User::all()->pluck('id')),
         ];
-    }
-
-    private function phoneGenerator()
-    {
-        $code = '+380';
-        $code .= ' (93) ';
-        $code .= rand(100, 999);
-        $code .= ' '.rand(10, 99);
-        $code .= ' '.rand(10, 99);
-        return $code;
     }
 }
