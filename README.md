@@ -2,7 +2,6 @@
 
 Catalog for admin, to administrate developers. Builds on nested set tree.
 
-
 ## Run Locally
 Clone the project
 ```bash
