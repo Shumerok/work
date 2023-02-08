@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
         return [
             'photo' => 'required|image|mimes:png,jpg|max:5120|dimensions:min_width=300,min_height=300',
             'name'=> 'required|string|min:2|max:256|regex:/^[a-zA-Z\s]*$/',
-            'phone'=> 'required|regex:/^\+380 \([50,93,67]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
+            'phone'=> 'required|regex:/^\+380 \([50,66,95,99,67,68,96,97,98,63,73,93]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
             'email'=> 'required|string|email|max:255|unique:employers,email',
             'position_id'=>'required|integer|exists:positions,id',
             'salary' => 'required|decimal:0,500',
