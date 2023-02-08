@@ -20,7 +20,7 @@ make init
 ```
 
 ### Go to http://localhost:7000/
-Standard Auth:
+Default Auth:
 ```
 user: shumerok@shumerok.com
 pass: 123456789

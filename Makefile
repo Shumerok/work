@@ -14,7 +14,7 @@ down:
 migrate:
 	${DOCKER_EXEC} php artisan migrate
 
-storage:
+link:
 	${DOCKER_EXEC} php artisan storage:link
 
 seed:
@@ -26,11 +26,14 @@ fresh:
 composer:
 	${DOCKER_EXEC} composer install
 
+pause:
+	sleep 5
+
 restart:
 	make down up
 
 init:
-	make build up composer migrate seed print storage
+	make build up composer pause migrate seed print link
 
 print:
 	@echo Welcome: http://localhost:7000
