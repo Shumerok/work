@@ -2,7 +2,7 @@
 @section('css-table')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">--}}
+    {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
@@ -109,7 +109,7 @@
                     {
                         'data': 'photo',
                         "render": function (data) {
-                            return '<img src="/storage/' + data + '"  width="40px" />';
+                            return '<img src="' + '{{url('storage')}}/' + data + '"  width="40px" />';
                         }
                     },
                     {'data': 'name'},
@@ -117,15 +117,16 @@
                         'data': 'position.name',
                         "defaultContent": "<i>Not set</i>"
                     },
-                    {'data': 'date_employment',
-                     'render': function (data){
-                        date = new Date(data)
-                        return Intl.DateTimeFormat(undefined, {
-                            year: "numeric",
-                            month: "numeric",
-                            day: "numeric",
-                        }).format(date);
-                     }
+                    {
+                        'data': 'date_employment',
+                        'render': function (data) {
+                            date = new Date(data)
+                            return Intl.DateTimeFormat(undefined, {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                            }).format(date);
+                        }
                     },
                     {'data': 'phone'},
                     {'data': 'email'},
