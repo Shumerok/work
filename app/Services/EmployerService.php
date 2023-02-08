@@ -35,6 +35,8 @@ class EmployerService
     {
         try {
             DB::beginTransaction();
+            Storage::disk('public')->delete($employer->photo);
+
             if (isset($data['photo'])) {
                 $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
             }
@@ -102,7 +104,7 @@ class EmployerService
                 return '<a href="'.route(
                         'employers.edit',
                         $employees->id
-                    ).'"class="btn btn-info btn-sm mr-3 edit id="'.$employees->id.'"><i class="fas fa-pencil-alt mr-1"></i> </a>
+                    ).'"class="btn btn-info btn-sm mr-3 edit id="'.$employees->id.'"> <i class="fas fa-pencil-alt "></i></a>
                         <button type="button" name="'.$employees->name.'" id="'.$employees->id.'" class="delete btn btn-danger btn-sm"> <i class="fas fa-trash mr-1 " role="button"></i></button>';
             })->make();
     }

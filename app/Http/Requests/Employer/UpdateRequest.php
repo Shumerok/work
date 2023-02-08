@@ -26,15 +26,14 @@ class UpdateRequest extends FormRequest
     {
         return [
             'photo' => 'nullable|image|mimes:png,jpg|max:5120|dimensions:min_width=300,min_height=300',
-//            'name'=> 'required|string|min:2|max:256|regex:/^[a-zA-Z\s]*$/',
-            'name'=> 'required|string|min:2|max:256|',
-            'phone'=> 'required|regex:/^\+380 \([50,93,67]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
-            'email'=> 'required|string|email|max:255|',
-            'position_id'=>'nullable|integer|exists:positions,id',
+            'name' => 'required|string|min:2|max:256|',
+            'phone' => 'required|regex:/^\+380 \([50,66,95,99,67,68,96,97,98,63,73,93]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
+            'email' => 'required|string|email|max:255|',
+            'position_id' => 'nullable|integer|exists:positions,id',
             'salary' => 'required|decimal:0,500',
-            'head'=>'nullable|integer|exists:employers,id',
-            'date_employment'=> 'required|date:d/m/Y',
-            'admin_updated_id'=>'required|integer|exists:users,id'
+            'head' => 'nullable|integer|exists:employers,id',
+            'date_employment' => 'required|date:d/m/Y',
+            'admin_updated_id' => 'required|integer|exists:users,id'
         ];
     }
 }

@@ -2,7 +2,7 @@
 @section('css-table')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
@@ -16,7 +16,7 @@
                     <div class="col-3">
                         <h1 class="m-0">Employees</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-2 col-2 ml-auto">
+                    <div class="col-2 ml-auto">
                         <a href="{{route('employers.create')}}" class="btn btn-block btn-secondary btn-flat">Add
                             Employee</a>
                     </div>
@@ -56,7 +56,6 @@
                             <!-- /.card-body -->
                         </div>
                     </div>
-
                     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="ModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog">

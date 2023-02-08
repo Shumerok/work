@@ -11,10 +11,10 @@ class EmployerSeeder extends Seeder
 {
     public function run()
     {
-        $data = $this->idGenerate(1, 40000);
+        $data = $this->idGenerate(1, 4000);
 
-        $this->roots(10000, 5000);
-        $this->children(40000, 5000, $data);
+        $this->roots(1000, 1000);
+        $this->children(4000, 1000, $data);
         Employer::fixTree();
     }
 
@@ -30,8 +30,9 @@ class EmployerSeeder extends Seeder
 
     private function phoneGenerator(): string
     {
+        $mobileCode = [50,66,95,99,67,68,96,97,98,63,73,93];
         $code = '+380';
-        $code .= ' (93) ';
+        $code .= ' ('. fake()->randomElement($mobileCode) . ') ';
         $code .= rand(100, 999);
         $code .= ' '.rand(10, 99);
         $code .= ' '.rand(10, 99);

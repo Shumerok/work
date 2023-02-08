@@ -13,8 +13,7 @@
                     <div class="ml-2">
                         <h1 class="m-0">Positions</h1>
                     </div><!-- /.col -->
-
-                    <div class=" ml-auto mr-2">
+                    <div class="ml-auto mr-2">
                         <a href="{{route('positions.create')}}" class="btn btn-block btn-secondary btn-flat">Add position</a>
                     </div>
                 </div><!-- /.row -->

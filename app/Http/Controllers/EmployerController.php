@@ -10,6 +10,7 @@ use App\Services\EmployerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class EmployerController extends Controller
@@ -66,7 +67,7 @@ class EmployerController extends Controller
 
     public function getAjaxData(): JsonResponse
     {
-        $employees = Employer::with('position')->orderBy('id');
+        $employees = Employer::with('position');
         return $this->service->getIndexData($employees);
     }
 }
