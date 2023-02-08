@@ -30,7 +30,7 @@ restart:
 	make down up
 
 init:
-	make build up composer migrate seed storage print
+	make build up composer migrate seed print storage
 
 print:
 	@echo Welcome: http://localhost:7000

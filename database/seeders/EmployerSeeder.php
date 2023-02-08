@@ -44,7 +44,7 @@ class EmployerSeeder extends Seeder
         $data = [];
         for ($i = 0; $i < $amount; $i++) {
             $data[] = [
-                'photo' => '/avatars/3551739.jpg',
+                'photo' => 'avatars/3551739.jpg',
                 'name' => fake()->firstName.' '.fake()->lastName,
                 'position_id' => fake()->randomElement(Position::all()->pluck('id')),
                 'date_employment' => now()->format('Y-m-d'),
@@ -65,7 +65,7 @@ class EmployerSeeder extends Seeder
         $data = [];
         for ($i = 0; $i < $amount; $i++) {
             $data[] = [
-                'photo' => '/avatars/3551739.jpg',
+                'photo' => 'avatars/3551739.jpg',
                 'name' => fake()->firstName.' '.fake()->lastName,
                 'position_id' => fake()->randomElement(Position::all()->pluck('id')),
                 'date_employment' => now()->format('Y-m-d'),
