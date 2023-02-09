@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('css-table')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-{{--    <link rel="stylesheet" href="/resources/demos/style.css">--}}
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')

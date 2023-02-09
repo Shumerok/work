@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Models\Employer;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\DataTables;
 
 class EmployerService
@@ -18,10 +20,10 @@ class EmployerService
         try {
             DB::beginTransaction();
             $head = $data['head'];
-            $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
+            $imageName = $this->saveAvatar($data['photo'], 'png', 300, 300, 80);
+            $data['photo'] = 'avatars/'.$imageName;
             unset($data['head']);
             $employer = Employer::firstOrCreate($data);
-
             $employer->parent_id = $head;
             $employer->save();
             DB::commit();
@@ -38,7 +40,8 @@ class EmployerService
             Storage::disk('public')->delete($employer->photo);
 
             if (isset($data['photo'])) {
-                $data['photo'] = Storage::disk('public')->put('/avatars', $data['photo']);
+                $imageName = $this->saveAvatar($data['photo'], 'png', 300, 300, 80);
+                $data['photo'] = 'avatars/'.$imageName;
             }
             if (isset($data['head'])) {
                 $employer->parent_id = $data['head'];
@@ -127,6 +130,15 @@ class EmployerService
         }
 
         return response()->json($response);
+    }
+
+    private function saveAvatar($image, string $format, int $width, int $heigth, int $quality): string
+    {
+        $ext = '.'.$format;
+        $imageName = uniqid().$ext;
+        $imageConvert = Image::make($image->getRealPath())->fit($width, $heigth)->encode($format, $quality);
+        Storage::disk('public')->put('avatars/'.$imageName, $imageConvert);
+        return $imageName;
     }
 }
 
