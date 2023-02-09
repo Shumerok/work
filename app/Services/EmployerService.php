@@ -37,9 +37,8 @@ class EmployerService
     {
         try {
             DB::beginTransaction();
-            Storage::disk('public')->delete($employer->photo);
-
             if (isset($data['photo'])) {
+                Storage::disk('public')->delete($employer->photo);
                 $imageName = $this->saveAvatar($data['photo'], 'png', 300, 300, 80);
                 $data['photo'] = 'avatars/'.$imageName;
             }
