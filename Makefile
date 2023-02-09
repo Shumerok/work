@@ -26,6 +26,9 @@ fresh:
 composer:
 	${DOCKER_EXEC} composer install
 
+php:
+	${DOCKER_EXEC} bash
+
 pause:
 	sleep 5
 
