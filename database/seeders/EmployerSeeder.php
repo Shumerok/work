@@ -11,10 +11,10 @@ class EmployerSeeder extends Seeder
 {
     public function run()
     {
-        $data = $this->idGenerate(1, 40000);
+        $data = $this->idGenerate(1, 4000);
 
-        $this->roots(10000, 5000);
-        $this->children(40000, 5000, $data);
+        $this->roots(1000, 1000);
+        $this->children(4000, 1000, $data);
         Employer::fixTree();
     }
 
