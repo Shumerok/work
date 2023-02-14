@@ -11,17 +11,9 @@ class EmployerSeeder extends Seeder
 {
     public function run()
     {
-//        echo memory_get_peak_usage();
         $data = $this->idGenerate(1, 40000);
-        foreach ($this->roots(10000) as $root) {
-            Employer::insert($root);
-        }
-        foreach ($this->children(40000, $data) as $child) {
-            Employer::insert($child);
-        }
-//        echo "\n";
-//        echo memory_get_peak_usage();
-//        $this->children(4000, 1000, $data);
+        $this->roots(10000,5000);
+        $this->children(40000,5000, $data);
         Employer::fixTree();
     }
 
@@ -46,10 +38,11 @@ class EmployerSeeder extends Seeder
         return $code;
     }
 
-    private function roots(int $amount)
+    private function roots(int $amount, int $chunk): void
     {
+        $data = [];
         for ($i = 0; $i < $amount; $i++) {
-            yield [
+            $data[] = [
                 'photo' => 'avatars/3551739.png',
                 'name' => fake()->firstName.' '.fake()->lastName,
                 'position_id' => fake()->randomElement(Position::all()->pluck('id')),
@@ -63,12 +56,14 @@ class EmployerSeeder extends Seeder
                 'admin_updated_id' => fake()->randomElement(User::all()->pluck('id')),
             ];
         }
+        $this->insertByChunk($data, $chunk);
     }
 
-    private function children(int $amount, array $idArray)
+    private function children(int $amount, int $chunk, array $idArray)
     {
+        $data = [];
         for ($i = 0; $i < $amount; $i++) {
-            yield [
+            $data[] = [
                 'photo' => 'avatars/3551739.png',
                 'name' => fake()->firstName.' '.fake()->lastName,
                 'position_id' => fake()->randomElement(Position::all()->pluck('id')),
@@ -80,10 +75,11 @@ class EmployerSeeder extends Seeder
                 'updated_at' => now(),
                 'admin_created_id' => fake()->randomElement(User::all()->pluck('id')),
                 'admin_updated_id' => fake()->randomElement(User::all()->pluck('id')),
-//                'parent_id' => ++$i,
                 'parent_id' => array_shift($idArray),
             ];
         }
+
+        $this->insertByChunk($data, $chunk);
     }
 
     private function insertByChunk(array $data, $chunk)

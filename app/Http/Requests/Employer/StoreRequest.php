@@ -30,11 +30,18 @@ class StoreRequest extends FormRequest
             'phone'=> 'required|regex:/^\+380 \([50,66,95,99,67,68,96,97,98,63,73,93]{2}\) [0-9]{3} [0-9]{2} [0-9]{2}$/i',
             'email'=> 'required|string|email|max:255|unique:employers,email',
             'position_id'=>'required|integer|exists:positions,id',
-            'salary' => 'required|decimal:0,500',
+            'salary' => 'required|numeric|between:0,500',
             'head'=>'required|integer|exists:employers,id',
             'date_employment'=> 'required|after:today|date:d/m/Y',
             'admin_created_id'=>'required|integer|exists:users,id',
             'admin_updated_id'=>'required|integer|exists:users,id',
         ];
+    }
+    protected function prepareForValidation()
+    {
+        $floatSalary = (float)str_replace(',', '.', $this->salary);
+        $this->merge([
+            'salary' => $floatSalary,
+        ]);
     }
 }
